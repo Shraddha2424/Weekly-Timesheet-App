@@ -1,0 +1,82 @@
+/* Base styles (Desktop) */
+.sidebar {
+  width: 256px;
+  height: 100vh;
+  background: #ffffff;
+  color: rgb(15, 2, 2);
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 1rem;
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+/* Sidebar hidden by default on small screens */
+.sidebar.collapsed {
+  transform: translateX(-100%);
+}
+
+/* Toggle button */
+.sidebar-toggle {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1100;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Menu styles */
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 1rem;
+  text-align: center;
+  border-bottom: 1px solid rgba(241, 235, 235, 0.2);
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+}
+
+.menu li {
+  padding: 1rem;
+}
+
+.menu a {
+  color: rgb(15, 13, 13);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.menu a.active,
+.menu a:hover {
+  background: #bcd9f7;
+  height: 40px;
+  width: 220px;
+  padding: 15px;
+}
+
+/* 📱 Responsive (Mobile & Tablet) */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.show {
+    transform: translateX(0);
+  }
+
+  .sidebar-toggle {
+    display: block;
+  }
+}

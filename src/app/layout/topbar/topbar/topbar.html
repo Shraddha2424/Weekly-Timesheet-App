@@ -1,0 +1,18 @@
+<div class="topbar">
+  <div class="breadcrumbs">TimeSheet | My TimeSheet - Week</div>
+
+  <div class="user-section">
+    
+    
+    <div class="menu-icon" (click)="toggleMenu()">
+      <i class="pi pi-ellipsis-v"></i>
+    </div>
+  </div>
+</div>
+
+
+<ul class="topbar-dropdown" [ngClass]="{ 'show': isMenuOpen }">
+  <li (click)="goToSettings()">Settings</li>
+  <li (click)="logout()">Logout</li>
+</ul>
+ 

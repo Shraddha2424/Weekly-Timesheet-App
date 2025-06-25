@@ -1,0 +1,149 @@
+   <div class="container m-3 mt-11 mt-md-3">
+<div class="timesheet-container ">
+  <div class="tab-navigation">
+    <div class="tab active">
+      <i class="pi pi-book"></i>
+      <span>My Timesheet</span>
+    </div>
+    <div class="tab">
+      <i class="pi pi-check-square"></i>
+      <span>Submitted Timesheet</span>
+    </div>
+  </div>
+  <div class="view-controls">
+    <div class="view-tabs">                 
+      <p-button class="view-tab" [class.active]="viewMode === 'month'" (click)="setView('month')">Month</p-button>
+      <p-button class="view-tab" [class.active]="viewMode === 'week'" (click)="setView('week')">Week</p-button>
+      <p-button class="view-tab" [class.active]="viewMode === 'day'" (click)="setView('day')">Day</p-button>
+    </div>
+    <div class="date-navigation">
+      <p-button class="nav-btn" (click)="navigatePreviousWeek()"><i class="pi pi-chevron-left"></i></p-button>
+      <p-button class="nav-btn" (click)="navigateNextWeek()"><i class="pi pi-chevron-right"></i></p-button>
+      <span class="week-range">{{ getWeekRange() }}</span>
+      <p-button class="calendar-btn" (click)="showCalendar = !showCalendar"><i class="pi pi-calendar-times"></i></p-button>
+      <p-calendar *ngIf="showCalendar" [(ngModel)]="selectedDate" (onSelect)="onCalendarSelect($event)" [inline]="true" dateFormat="M dd, yy"></p-calendar>
+    </div>
+     <div class="hour-summary">
+      <div class="logged-hours">
+        <span class="hour-value">00:00 hrs</span>
+        <span class="hour-label">Logged Hours</span>
+      </div>
+      <div class="submitted-hours">
+        <span class="hour-value1">00:00 hrs</span>
+        <span class="hour-label">Submitted Hours</span>
+      </div>
+      <div class="action-buttons">
+        <p-button class="project-btn" label="Project"(click)="openProjectModal()">
+          <i class="pi pi-plus"></i>
+        </p-button>
+        <div class="submit-btn-div"> 
+          <p-button label="Submit" class="submit-btn"  icon="pi pi-chevron-down" iconPos="right" [style]="{'color': 'white'}">
+          </p-button>
+        </div>
+      </div>                                                  
+    </div>      
+  </div>    
+  <div class="timesheet-grid"> 
+    <ng-container *ngIf="viewMode === 'week'">
+      <table class="timesheet-table">
+        <thead>
+          <tr>
+            <th class="project-header">Projects / Tasks</th>
+            <th class="description-header">Description</th>
+            <th class="billability-header">Billability</th>
+            <th *ngFor="let day of weekDays; let i = index"    class="day-header" 
+              [ngClass]="{'selected-day': selectedDayIndex === i}" 
+              (click)="selectDay(i)">
+              <div class="day-name">{{ day.name }}</div>
+              <div class="day-date">{{ day.date }}</div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let project of projects">
+            <tr class="project-row">
+              <td class="project-cell">
+                <div class="project-toggle" (click)="toggleProject(project.id)">
+                  <div class="project-icon">
+                    <i class="pi" [ngClass]="project.expanded ? 'pi-chevron-right' : 'pi-chevron-down'"></i>
+                  </div>
+                  <img class="projects-icon" src="https://app.intimepro.io/assets/common/images/projects/default%20image%20for%20project%20-1.png">
+                  <span class="project-name">{{ project.name }}</span>
+                </div>
+                <p-button *ngIf="project.name" class="add-task-btn" (click)="openTaskModal(project.id); $event.stopPropagation()"><i class="pi pi-plus"></i>Task</p-button>
+              </td>
+              <td colspan="2"></td>
+              <td *ngFor="let day of weekDays; let i = index" class="project-total">{{ getProjectTotalForDay(project, i) }}</td>
+            </tr>
+            <ng-container *ngIf="project.expanded">
+              <tr *ngFor="let task of project.tasks" class="task-row">
+                <td class="task-name">{{ task.taskCategory }}</td>
+                <td class="task-description">{{ task.description }}</td>                <td class="task-billability">
+                  <button type="radio" class="billable-tag" [ngClass]="{'non-billable': task.billable === 'non-billable'}">{{ task.billable === 'billable' ? 'Billable' : 'Non-billable' }}</button>
+                </td>
+                <td *ngFor="let day of weekDays; let i = index" class="time-entry-cell">
+                  <input type="text" class="time-input" [value]="getTaskHoursForCurrentWeek(task)[i] || '00:00'" (change)="updateHours(project.id, task.id, i, $event)">
+                </td>                                                    
+              </tr>
+            </ng-container>
+          </ng-container>
+          <tr class="total-row">
+            <td colspan="2" class="space" ></td>
+            <td colspan="1" class="total-label">Total</td>
+            <td *ngFor="let day of weekDays; let i = index" class="total-hours">{{ getTotalForDay(i) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+    <ng-container *ngIf="viewMode === 'day'">
+      <table class="timesheet-table">
+        <thead>           
+          <tr>
+            <th>Project</th>
+            <th>Task Category</th>
+            <th>Task</th>
+            <th>Billability</th>
+            <th>Task Status</th>
+            <th>Description</th>
+            <th>Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let project of projects">
+            <ng-container *ngIf="project.tasks && project.tasks.length">
+              <tr *ngFor="let task of project.tasks">
+                <td>{{ project.name }}</td>
+                <td>{{ task.taskCategory }}</td>
+                <td>{{ task.name }}</td>
+                <td><span class="billable-tag" [ngClass]="{'non-billable': task.billable === 'non-billable'}">{{ task.billable === 'billable' ? 'Billable' : 'Non-billable' }}</span></td>
+                <td>{{ task.status || '-' }}</td>
+                <td>{{ task.description }}</td>
+                <td>
+                  <input type="text" class="time-input" [value]="getTaskHoursForCurrentWeek(task)[selectedDayIndex] || '00:00'" (change)="updateHours(project.id, task.id, selectedDayIndex, $event)">
+                </td>                              
+              </tr> 
+            </ng-container>
+          </tr>
+          <tr class="total-row">
+            <td colspan="6" class="total-label"></td>
+            <td class="total-hours">{{ getTotalForDay(selectedDayIndex) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+  </div>  
+</div>
+</div>
+  <app-project-modal
+    [isVisible]="showProjectModal "
+    (close)="closeProjectModal()"
+    (save)="saveProject($event)">
+  </app-project-modal>
+
+  <app-task-modal
+  [isVisible]="showTaskModal"
+  [selectedProjectName]="selectedProjectName"
+  [projects]="projects"
+  (close)="closeTaskModal()"
+  (save)="saveTask($event)">
+  </app-task-modal>

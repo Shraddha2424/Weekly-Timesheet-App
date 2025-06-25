@@ -1,0 +1,21 @@
+<!-- Toggle Button (visible only on tablet/mobile via CSS) -->
+<button class="sidebar-toggle" (click)="toggleSidebar()">☰</button>
+
+<!-- Sidebar -->
+<div class="sidebar" [ngClass]="{ 'show': isSidebarVisible }">
+  <div class="logo">
+    <img
+      alt="logo"
+      height="25"
+      class="ng-tns-c595-2"
+      src="https://app.intimepro.io/assets/common/images/ITP-copilot%20logo.svg"
+    />
+  </div>
+  <ol class="menu">
+    <li *ngFor="let item of menuItems">
+      <a routerLinkActive="active">
+        <i [class]="item.icon"></i> <span>{{ item.label }}</span>
+      </a>
+    </li>
+  </ol>
+</div>

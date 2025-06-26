@@ -15,6 +15,8 @@ import { TabMenuModule } from 'primeng/tabmenu';
 import { ButtonGroupModule } from 'primeng/buttongroup';
 import { InputText, InputTextModule } from 'primeng/inputtext';
 import { PrimeIcons } from 'primeng/api';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 interface Project {
   name: string;
@@ -32,15 +34,18 @@ interface Project {
     InputNumberModule,
     ButtonModule,
     ButtonGroupModule,
-    ToggleButtonModule, TabMenuModule,
+    ToggleButtonModule, TabMenuModule,ToggleSwitchModule,
     CalendarModule,
-    InputTextModule,
+    InputTextModule,InputSwitchModule,
     FormsModule, ProjectModal, TagModule, TaskModal],
   templateUrl: './timesheet.html',
   standalone:true,
   styleUrl: './timesheet.css'
 })
 export class Timesheet implements OnInit {
+toggleBillability(arg0: any,arg1: any,arg2: any) {
+throw new Error('Method not implemented.');
+}
 getDayViewTasks(): any[] {
 throw new Error('Method not implemented.');
 }

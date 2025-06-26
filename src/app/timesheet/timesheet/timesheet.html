@@ -33,11 +33,11 @@
         <span class="hour-label">Submitted Hours</span>
       </div>
       <div class="action-buttons">
-        <p-button class="project-btn" label="Project"(click)="openProjectModal()">
-          <i class="pi pi-plus"></i>
+        <p-button class="project-btn" (click)="openProjectModal()">
+          <i class="pi pi-plus"></i> Project
         </p-button>
         <div class="submit-btn-div"> 
-          <p-button label="Submit" class="submit-btn"  icon="pi pi-chevron-down" iconPos="right" [style]="{'color': 'white'}">
+          <p-button   class="submit-btn">Submit <span class="breadcrumb-separtor" style="margin-left: 2px; color: white;font-size: large;">|</span><i class="pi pi-chevron-down"  iconPos="right" [style]="{'color': 'white'}"></i>
           </p-button>
         </div>
       </div>                                                  
@@ -78,7 +78,8 @@
             <ng-container *ngIf="project.expanded">
               <tr *ngFor="let task of project.tasks" class="task-row">
                 <td class="task-name">{{ task.taskCategory }}</td>
-                <td class="task-description">{{ task.description }}</td>                <td class="task-billability">
+                <td class="task-description">{{ task.description }}</td>             
+                   <td class="task-billability">
                   <button type="radio" class="billable-tag" [ngClass]="{'non-billable': task.billable === 'non-billable'}">{{ task.billable === 'billable' ? 'Billable' : 'Non-billable' }}</button>
                 </td>
                 <td *ngFor="let day of weekDays; let i = index" class="time-entry-cell">

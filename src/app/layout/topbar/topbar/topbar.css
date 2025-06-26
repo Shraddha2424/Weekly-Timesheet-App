@@ -4,14 +4,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1.5rem;
+  padding:0rem;
   margin-left: 256px;
-  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+  
 }
 
 .breadcrumbs {
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .user-section {

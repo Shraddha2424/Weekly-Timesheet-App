@@ -30,12 +30,15 @@
 
 .tab.active {
   color: #3699FF;
-  border-bottom: 3  px solid #3699ff !important;
+  border-bottom: 3px solid #3699ff !important;
   font-weight: 500;
-       }
+  }
+  .tab.active span 
+  {color: var(--primary) !important;}
 
 .tab i {
   font-size: 1.2rem;
+  color: var(--primary);
 }
 
 .view-controls {
@@ -130,12 +133,14 @@
 }
 
 .submit-btn {
-  padding: 7px 10px;
+  padding: 7px 7px;
   background-color: #0d6efd;
-  color: #ffffff !important;
+  color:var( --white) !important;
   border: none;
   border-radius: 4px;
+
   cursor: pointer;
+  
 }
 
 .action-buttons {
@@ -144,17 +149,21 @@
   gap: 8px;
 }
 
-.project-btn {
+.project-btn  {
   padding: 4px 8px;
   background-color: white;
-  color: #0d6efd;
-  border: 1px solid #0d6efd;
+  color:var(--primary) !important;
+  border: 1px solid var(--primary);
   border-radius: 4px;
   cursor: pointer;
   display: flex;
   align-items: center;
   font-weight: 500;
 }
+.project-btn i {
+  color: var(--primary);
+}
+
 
 .project-btn:hover {
   background-color: #f0f7ff;
@@ -175,8 +184,7 @@
 }
 
 .timesheet-table,
-.timesheet-table th,
-.timesheet-table td {
+.timesheet-table th {
   border: none !important;
   text-align: center;
   padding: 8px 12px;
@@ -228,6 +236,7 @@
 .pi {
   width: 1rem;
   margin: 5px;
+ 
 }
 .projects-icon{
   width: 16px;
@@ -238,7 +247,7 @@
   font-size: 14px;
 }
 
-.add-task-btn {
+.add-task-btn  {
   margin: 4px;
   background: none;
   color: var(--primary) !important;
@@ -250,14 +259,27 @@
   font-size: 12px;
   font-weight: 500 !important;
 }
-
+.add-task-btn i{
+  color: var(--primary);
+}
+.project-total{
+    /* width: 30px; */
+    font-size: small;
+  text-align:center;
+  padding: 4px;
+  border: none !important;
+  color: #6c757d !important;
+  font-weight:600 !important;
+}
 .task-row {
   background-color: #f5f7f9;
   font-weight: 700 !important;
+ 
 }
 
 .task-name,
-.task-description {
+.task-description,
+.task-billability{
   text-align: left;
   padding-left: 36px;
   font-size: 13px;
@@ -268,6 +290,7 @@
   padding: 2px 8px;
   border-radius: 12px;
   font-size: 10px;
+  border: none;
   background: #e9f7ef;
   color: white !important;
   background-color: #198754;
@@ -285,21 +308,22 @@
   padding: 4px;
   border: none !important;
   color: #6c757d !important;
-  font-weight: 700 !important;
+  font-weight:600 !important;
 }
 
 .time-input::before {
   color:#6c757d !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
 }
 
 .time-entry-cell {
   color:#6c757d !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
 }
 
 .total-row {
-  font-weight: 600;
+  font-weight: 700;
+  font-size: small;
   background-color: #e9f0f7;
   height: 50px;
 
@@ -321,3 +345,4 @@
   padding: 8px 16px;
   border-radius: 4px;
 }
+

@@ -1,7 +1,6 @@
 import { CommonModule, NgFor } from '@angular/common';
-import { Component, EventEmitter, Input, NgModule, Output } from '@angular/core';
-import { FormsModule, NgForm, NgModel } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
+import { Component, EventEmitter, Input, NgModule, Output, ViewChild } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -9,17 +8,20 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @Component({
   selector: 'app-project-modal',
   imports: [NgFor, CommonModule,
-  FormsModule,ButtonModule,ConfirmDialogModule
+    FormsModule, ButtonModule, ConfirmDialogModule
   ],
   templateUrl: './project-modal.html',
   styleUrl: './project-modal.css',
   providers: [ConfirmationService]
 })
 export class ProjectModal {
- @Input() isVisible: boolean = false;
+  @Input() isVisible: boolean = false;
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<any>();
+  @ViewChild('projectForm') form!: NgForm;
   
+  submitted = false;
+
   // Sample data - replace with your actual data or service calls
   clients = [
     { id: 1, name: 'Client A' },
@@ -33,7 +35,7 @@ export class ProjectModal {
     { id: 3, name: 'Mike Johnson' }
   ];
   
-  projectForm = {
+  projectData = {
     projectName: '',
     client: '',
     startDate: '',
@@ -42,7 +44,6 @@ export class ProjectModal {
     status: '',
     description: ''
   };
-project: any;
   
   constructor(private confirmationService: ConfirmationService) { }
 
@@ -55,19 +56,20 @@ project: any;
   }
   
   onSubmit() {
-    if (this.validateForm()) {
-      this.save.emit(this.projectForm);
+    this.submitted = true;
+    
+    if (this.form.valid) {
+      this.save.emit(this.projectData);
       this.closeModal();
     }
   }
   
-  validateForm(): boolean {
-    const { projectName, client, startDate, projectManager, status } = this.projectForm;
-    return !!projectName && !!client && !!startDate && !!projectManager && !!status;
-  }
-  
   resetForm() {
-    this.projectForm = {
+    if (this.form) {
+      this.form.resetForm();
+    }
+    this.submitted = false;
+    this.projectData = {
       projectName: '',
       client: '',
       startDate: '',
@@ -99,10 +101,7 @@ project: any;
       icon: 'pi pi-check-circle',
       accept: () => {
         this.onSubmit();
-      },
-      reject: () => {
-        // Handle rejection logic if needed
-      },
+      }
     });
   }
 }

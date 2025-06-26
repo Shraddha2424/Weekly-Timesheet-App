@@ -1,4 +1,4 @@
-import { formatNumber, NgClass, NgStyle } from '@angular/common';
+import { formatNumber, NgClass, NgIf, NgStyle } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -11,15 +11,16 @@ import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-task-modal',
-  imports: [NgClass, NgStyle, FormsModule, ButtonModule, ToastModule, ConfirmDialogModule, DropdownModule],
+  imports: [NgClass, NgIf, FormsModule, ButtonModule, ToastModule, ConfirmDialogModule, DropdownModule],
   templateUrl: './task-modal.html',
   styleUrl: './task-modal.css',
   providers: [ConfirmationService]
 })
 export class TaskModal {
-taskStatusOptions: any;
-taskNameOptions: any[]|undefined;
-  constructor(private confirmationService: ConfirmationService) {}
+  taskStatusOptions: any;
+  taskNameOptions: any[] | undefined;
+
+  constructor(private confirmationService: ConfirmationService) { }
 
   @Input() isVisible: boolean = false;
   @Input() selectedProjectId: string | null = null;
@@ -47,27 +48,52 @@ taskNameOptions: any[]|undefined;
     description: '',
     comment: ''
   };
+  formSubmitted = false;
+  formErrors = {
+    taskCategory: false,
+    taskName: false,
+    billable: false,
+    taskStatus: false,
+    description: false
+  };
+
   closeModal() {
     this.close.emit();
   }
 
   onSubmit() {
-    console.log('Submitting task:', this.taskForm);
+    this.formSubmitted = true;
+ 
     if (this.validateForm()) {
       this.save.emit(this.taskForm);
       this.resetForm();
     } else {
+      this.updateFormErrors();
       console.log('Validation failed', this.taskForm);
     }
   }
+
   validateForm() {
-    
     return (
       this.taskForm.taskCategory.trim() !== '' &&
       this.taskForm.taskName.trim() !== '' &&
-      this.taskForm.taskStatus.trim() !== ''
+      this.taskForm.billable.trim() !== '' &&
+      this.taskForm.taskStatus.trim() !== '' &&
+      this.taskForm.description.trim() !== ''
     );
-  }  resetForm() {
+  }
+
+  updateFormErrors() {
+    this.formErrors = {
+      taskCategory: this.taskForm.taskCategory.trim() === '',
+      taskName: this.taskForm.taskName.trim() === '',
+      billable: this.taskForm.billable.trim() === '',
+      taskStatus: this.taskForm.taskStatus.trim() === '',
+      description: this.taskForm.description.trim() === ''
+    };
+  }
+
+  resetForm() {
     this.taskForm = {
       taskCategory: '',
       taskName: '',
@@ -75,6 +101,14 @@ taskNameOptions: any[]|undefined;
       taskStatus: '',
       description: '',
       comment: ''
-    }
+    };
+    this.formSubmitted = false;
+    this.formErrors = {
+      taskCategory: false,
+      taskName: false,
+      billable: false,
+      taskStatus: false,
+      description: false
+    };
   }
 }

@@ -1,69 +1,86 @@
- 
 <div class="project-modal-container" [ngClass]="{'slide-in': isVisible, 'slide-out': !isVisible}">
   <div class="modal-header">
-    <h2>New Project</h2>
- 
-    <i class="pi pi-times" (click)="closeModal()" style="font-size: 1.5rem"></i>
+   <label>New Project</label>
+    <i class="pi pi-times" (click)="closeModal()" style="font-size: 1rem"></i>
   </div>
   
-  <form (ngSubmit)="onSubmit()">
- 
+  <form #projectForm="ngForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="projectName">Project Name <span class="required">*</span></label>
-      <input type="text" id="projectName" [(ngModel)]="projectForm.projectName" 
-             name="projectName" class="form-control" placeholder="Enter Project Name" required>
+      <input type="text" id="projectName" [(ngModel)]="projectData.projectName" 
+             name="projectName" class="form-control" placeholder="Enter Project Name" required #projectName="ngModel">
+      <small class="text-danger" *ngIf="projectName.invalid && (projectName.dirty || projectName.touched || submitted)">
+        Project name is required
+      </small>
     </div>
     
-   
     <div class="form-group">
       <label for="client">Client <span class="required">*</span></label>
-      <select id="client" [(ngModel)]="projectForm.client" name="client" class="form-control" required>
+      <select id="client" [(ngModel)]="projectData.client" name="client" class="form-control" required #client="ngModel">
         <option value="" disabled selected>Select Client</option>
         <option *ngFor="let client of clients" [value]="client.id">{{ client.name }}</option>
       </select>
+      <small class="text-danger" *ngIf="client.invalid && (client.dirty || client.touched || submitted)">
+        Client is required
+      </small>
     </div>
     
     <div class="form-group">
       <label for="startDate">Start Date <span class="required">*</span></label>
-      <input type="date" id="startDate" [(ngModel)]="projectForm.startDate" 
-             name="startDate" class="form-control" required>
+      <input type="date" id="startDate" [(ngModel)]="projectData.startDate" 
+             name="startDate" class="form-control" required #startDate="ngModel">
+      <small class="text-danger" *ngIf="startDate.invalid && (startDate.dirty || startDate.touched || submitted)">
+        Start date is required
+      </small>
     </div>
     
     <div class="form-group">   
       <label for="endDate">End Date</label>
-      <input type="date" id="endDate" [(ngModel)]="projectForm.endDate" 
-             name="endDate" class="form-control">
+      <input type="date" id="endDate" [(ngModel)]="projectData.endDate" 
+             name="endDate" class="form-control" required #endDate="ngModel">
+              <small class="text-danger" *ngIf="endDate.invalid && (endDate.dirty || endDate.touched || submitted)">
+        End date is required
+      </small>
     </div>
     
     <div class="form-group">
       <label for="projectManager">Project Manager <span class="required">*</span></label>
-      <select id="projectManager" [(ngModel)]="projectForm.projectManager" 
-              name="projectManager" class="form-control" required>
+      <select id="projectManager" [(ngModel)]="projectData.projectManager" 
+              name="projectManager" class="form-control" required #projectManager="ngModel">
         <option value="" disabled selected>Select Project Manager</option>
         <option *ngFor="let manager of projectManagers" [value]="manager.id">{{ manager.name }}</option>
       </select>
+      <small class="text-danger" *ngIf="projectManager.invalid && (projectManager.dirty || projectManager.touched || submitted)">
+        Project manager is required
+      </small>
     </div>
  
     <div class="form-group">
       <label for="status">Project Status <span class="required">*</span></label>
-      <select id="status" [(ngModel)]="projectForm.status" name="status" class="form-control" required>
+      <select id="status" [(ngModel)]="projectData.status" name="status" class="form-control" required #status="ngModel">
         <option value="" disabled selected>Select Status</option>
         <option value="Active">Active</option>
         <option value="On Hold">On Hold</option>
         <option value="Completed">Completed</option>
       </select>
+      <small class="text-danger" *ngIf="status.invalid && (status.dirty || status.touched || submitted)">
+        Project status is required
+      </small>
     </div>
   
     <div class="form-group">
-      <label for="description">Description</label>
-      <textarea id="description" [(ngModel)]="projectForm.description" 
+      <label for="description">Description <span class="required">*</span></label>
+      <textarea id="description" [(ngModel)]="projectData.description" 
                 name="description" class="form-control" rows="3" 
-                placeholder="Project description..."></textarea>
+                placeholder="Project description..." required #description="ngModel"></textarea>
+                <small class="text-danger" *ngIf="description.invalid && (description.dirty || description.touched || submitted)">
+                  Description is required
+                </small>
     </div>
     
     <div class="modal-footer">
       <p-button type="button" class="btn btn-outline-secondary" severity="danger" (click)="closeModal()">Cancel</p-button>
-      <p-button type="submit" class="btn btn-primary"  >Save</p-button>
+      <p-button type="submit" class="btn btn-primary">Save</p-button>
     </div>
   </form>
 </div>

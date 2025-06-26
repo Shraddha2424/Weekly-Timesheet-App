@@ -1,11 +1,10 @@
 <div class="task-modal-container" [ngClass]="{'slide-in': isVisible, 'slide-out': !isVisible}">
   <div class="modal-header">
-    <h2>New Task</h2>
-    <i class="pi pi-times" (click)="closeModal()" style="font-size: 1.5rem"></i>
+    <label>New Task</label>
+    <i class="pi pi-times" (click)="closeModal()" style="font-size: 1rem"></i>
   </div>
   
   <form (ngSubmit)="onSubmit()">
- 
     <div class="form-group">
       <label for="project">Project</label>
       <input type="text" id="project" class="form-control" [value]="selectedProjectName" readonly>
@@ -13,54 +12,83 @@
 
     <div class="form-group">
       <label for="taskCategory">Task Category <span class="required">*</span></label>
-      <select id="taskCategory" [(ngModel)]="taskForm.taskCategory" name="taskCategory" required class="form-control">
+      <select id="taskCategory" [(ngModel)]="taskForm.taskCategory" name="taskCategory" required 
+        class="form-control" #taskCategory="ngModel">
         <option value="" disabled selected>Select Task Category</option>
-         <option value="admin Activities">Admin Activities</option>
+        <option value="admin Activities">Admin Activities</option>
         <option value="Testing">Testing</option>
         <option value="finance">Finance</option>
         <option value="analytics">Analytics</option>
       </select>
-    </div> 
+      <small class="text-danger" *ngIf="taskCategory.invalid && (taskCategory.dirty || taskCategory.touched|| formSubmitted)">
+        Task Category is required
+      </small>
+    </div>
+
     <div class="form-group">
       <label for="taskName">Task Name <span class="required">*</span></label>
-      <select id="taskName" [(ngModel)]="taskForm.taskName" name="taskName" required class="form-control">
+      <select id="taskName" [(ngModel)]="taskForm.taskName" name="taskName" required 
+        class="form-control" #taskName="ngModel" >
         <option value="" disabled selected>Select Task Name</option>
-        <option value="training">training and Learning</option>
+        <option value="training">Training and Learning</option>
         <option value="Testing">Testing</option>
         <option value="finance">Finance</option>
         <option value="analytics">Analytics</option>
       </select>
-    </div>
-    <div class="form-row">   
-         <div class="form-group half-width">
-        <label for="billable">Billability <span class="required">*</span></label><select id="billable" [(ngModel)]="taskForm.billable" name="billable" required class="form-control" [ngClass]="{'non-billable-status': taskForm.billable === 'non-billable'}">          <option value="" disabled selected> Select Billability</option>
+      <small class="text-danger" *ngIf="taskName.invalid && (taskName.dirty || taskName.touched || formSubmitted)">
+        Task Name is required
+      </small>
+    </div>                                                 
+
+
+    <div class="form-row">
+      <div class="form-group half-width">
+        <label for="billable">Billability <span class="required">*</span></label>
+        <select id="billable" [(ngModel)]="taskForm.billable" name="billable" required 
+          class="form-control" #billable="ngModel">
+          <option value="" disabled selected>Select Billability</option>
           <option value="billable"><i class="pi pi-dollar"></i> Billable</option>
           <option value="non-billable"><i class="pi pi-dollar"></i> Non-Billable</option>
-        </select>
+        </select> 
+        <small class="text-danger" *ngIf="billable.invalid && (billable.dirty || billable.touched || formSubmitted)">
+          Billability is required
+        </small>
       </div>
+
       <div class="form-group half-width">
         <label for="taskStatus">Task Status <span class="required">*</span></label>
-        <select id="taskStatus" [(ngModel)]="taskForm.taskStatus" name="taskStatus" required class="form-control">
-          <option value="" disabled selected  >Select Task Status</option>
-           <option value="Active">Active</option>
-        <option value="On Hold">On Hold</option>
-        <option value="Completed">Completed</option>
+        <select id="taskStatus" [(ngModel)]="taskForm.taskStatus" name="taskStatus" required 
+          class="form-control"  #taskStatus="ngModel">
+          <option value="" disabled selected>Select Task Status</option>
+          <option value="Active">Active</option>
+          <option value="On Hold">On Hold</option>
+          <option value="Completed">Completed</option>
         </select>
+        <small class="text-danger" *ngIf="taskStatus.invalid && (taskStatus.dirty ||taskStatus.touched || formSubmitted)">
+          Task Status is required
+        </small>
       </div>
     </div>
+
     <div class="form-group">
       <label for="description">Description <span class="required">*</span></label>
       <textarea id="description" [(ngModel)]="taskForm.description" name="description" 
-      class="form-control textarea" placeholder="Add Task Description" required></textarea>
+        class="form-control textarea" placeholder="Add Task Description" required
+        #description="ngModel"></textarea>
+      <small class="text-danger" *ngIf="description.invalid && (description.dirty || description.touched|| formSubmitted)">
+        Description is required
+      </small>
     </div>
+
     <div class="form-group">
       <label for="comment">Comment</label>
       <textarea id="comment" [(ngModel)]="taskForm.comment" name="comment" 
-       class="form-control textarea" placeholder="Add comment (if any)"></textarea>
+        class="form-control textarea" placeholder="Add comment (if any)"></textarea>
     </div>
+
     <div class="modal-footer">
       <p-button type="button" class="btn btn-outline-secondary" (click)="closeModal()">Cancel</p-button>
-      <p-button type="submit" class="btn btn-primary" (onClick)="onSubmit()">Save</p-button>
+      <p-button type="submit" class="btn btn-primary">Save</p-button>
     </div>
   </form>
 </div>

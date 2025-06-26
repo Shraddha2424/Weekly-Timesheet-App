@@ -75,9 +75,9 @@
               <td colspan="2"></td>
               <td *ngFor="let day of weekDays; let i = index" class="project-total">{{ getProjectTotalForDay(project, i) }}</td>
             </tr>
-            <ng-container *ngIf="project.expanded">
-              <tr *ngFor="let task of project.tasks" class="task-row">
-                <td class="task-name">{{ task.taskCategory }}</td>
+            <ng-container *ngIf="project.expanded">   
+              <tr *ngFor="let task of project.tasks" c   lass="task-row">
+                <td class="task-name">{{ task.taskCategory }}</td>                  
                 <td class="task-description">{{ task.description }}</td>             
                    <td class="task-billability">
                   <button type="radio" class="billable-tag" [ngClass]="{'non-billable': task.billable === 'non-billable'}">{{ task.billable === 'billable' ? 'Billable' : 'Non-billable' }}</button>
